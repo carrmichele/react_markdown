@@ -1,0 +1,66 @@
+class MyApp extends React.Component {
+  render() {
+    return (
+      <div className="container">
+        <div className="row">
+         <div className="col-xs-12">
+          <h1 className="text-center">GitHub-flavored Markdown Previewer</h1>
+          <hr />
+        </div>
+       </div>
+      <Input />
+     </div>
+    )
+  }
+}
+
+class Input extends React.Component {
+  constructor() {
+    //Defines the constructor of a subclass
+    super();
+    this.state = {
+      md: '# Example of a Large Markdown Heading\n\nType here to replace and see output below\n------\n\n### Example of Medium/Large Heading\n\nParagraphs can be separated by a blank linke.\n\nLeave 2 spaces at the end of a line to create a line break\n\nText attributes include: *italic*, **bold**,\n`monospace`, ~~strikethrough~~. \n\nUnordered list:\n\n * apples\n * oranges\n * pears\n\nNumbered list:\n\n 1. apples\n 2. oranges\n 3. pears\n\n---\n\n#### Developed by:\n[Caroline Gordon](https://carrmichele.github.io \"Caroline Gordon\'s Portfolio\")'
+    };
+  }
+  
+  updatePreview(e) {
+    this.setState({
+      md: e.target.value
+    });
+  }
+  
+  render() {
+    return (
+      <div className="row">
+        <div className="col-md-6">
+          <h3 className="text-center input">Example Markdown Input</h3>
+          <textarea type="text" className="md-input" value={this.state.md} onChange={this.updatePreview.bind(this)}/>
+        </div>
+        <div className="col-md-6">
+          <h3 className="text-center result">Markup Output Example</h3>
+          <hr />
+          <MarkdownExample markdown={this.state.md} />
+        </div>
+      </div>
+      
+    )
+  }
+  
+}
+
+class MarkdownExample extends React.Component {
+  
+  convertMarkup() {
+    return {__html: marked(this.props.markdown)}
+  }
+  
+  render() {
+    return (
+    <div className="well" dangerouslySetInnerHTML={this.convertMarkup()}>
+        </div>
+      
+    )
+  }
+}
+
+React.render(<MyApp />, document.getElementById('markdownApp'));
